@@ -4,5 +4,9 @@ const WA_URL='https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(WA_MESSAGE);
 document.querySelectorAll('.wa-link').forEach(link=>link.href=WA_URL);
 const toggle=document.querySelector('.menu-toggle');
 const nav=document.querySelector('.nav-links');
-if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));}
-document.getElementById('year').textContent=new Date().getFullYear();
+if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Close navigation':'Open navigation');});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open navigation');}));}
+const socials={facebook:'',youtube:'',instagram:'',tiktok:''};
+document.querySelectorAll('[data-social]').forEach(link=>{const url=socials[link.dataset.social];if(url){link.href=url;link.target='_blank';link.rel='noopener noreferrer';}else{link.href='mailto:info@angelzik.org?subject='+encodeURIComponent('Angelzik '+link.dataset.social+' page');link.title='Social link to be added';}});
+const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
+const revealItems=document.querySelectorAll('.reveal');
+if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{threshold:.12});revealItems.forEach(item=>observer.observe(item));}else{revealItems.forEach(item=>item.classList.add('is-visible'));}
